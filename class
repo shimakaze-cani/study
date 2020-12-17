@@ -1,0 +1,48 @@
+#include<iostream>
+class Date1 {
+public:
+	Date1();
+	Date1(int, int m = 1, int d = 1);
+	void Print();
+private:
+	int year, month, day;
+	int checkDay(int d);
+};
+Date1::Date1()
+{
+	year = 2000; month = 1; day = 1;
+	std::cout << "Constructor without any parameters(" << year << ").\n";
+}
+Date1::Date1(int y, int m, int d)
+{
+	year = y;
+	month = m > 0 && m < 13 ? m : 1;
+	day = checkDay(d);
+	std::cout << "Cconstructor with parameters(" << year << ").\n";
+}
+ /*
+上述的两个（部分）缺省构造函数可以合并成一个缺省构造函数
+Date1::Date1(int y = 2000, int m = 1, int d = 1)
+{
+	year = y;
+	month = m > 0 && m < 13 ? m : 1;
+	day = checkDay(d);
+	std::cout << "default constructor(" << year << ").\n";
+}
+*/
+void Date1::Print() { std::cout << year << "." << month << "." << day; }
+int Date1::checkDay(int d)
+{
+	static int Days[13] = { 0,31,28,31,30,31,30,31,31,30,31,30,31 };
+	if (month != 2)
+	{
+		if (d > 0 && d <= Days[month])return d;
+	}
+	else
+	{
+		int d2 = (year % 400 == 0) || (year % 4 == 0 && year % 100 != 0) ? 29 : 28;
+		if (d > 0 && d <= d2)return d;
+	}
+	std::cout << "日数" << d << "不正确。置为一\n";
+	return 1;
+}
